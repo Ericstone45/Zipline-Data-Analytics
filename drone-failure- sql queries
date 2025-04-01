@@ -1,0 +1,96 @@
+-- Step 1: Create the database and schema
+CREATE DATABASE zipline_analytics;
+USE DATABASE zipline_analytics;
+CREATE SCHEMA my_zipline;
+USE SCHEMA my_zipline;
+
+-- Step 2: Create tables with relationships
+CREATE TABLE drones (
+    drone_id STRING PRIMARY KEY,
+    model STRING,
+    status STRING,
+    battery_level INT,
+    last_maintenance DATE
+);
+
+CREATE TABLE flight_logs (
+    flight_id STRING PRIMARY KEY,
+    drone_id STRING,
+    start_location STRING,
+    end_location STRING,
+    flight_date DATE,
+    duration_minutes INT,
+    FOREIGN KEY (drone_id) REFERENCES drones(drone_id)
+);
+
+CREATE TABLE crash_reports (
+    crash_id STRING PRIMARY KEY,
+    flight_id STRING,
+    drone_id STRING,
+    crash_date DATE,
+    crash_reason STRING,
+    location STRING,
+    FOREIGN KEY (flight_id) REFERENCES flight_logs(flight_id),
+    FOREIGN KEY (drone_id) REFERENCES drones(drone_id)
+);
+
+CREATE TABLE weather_conditions (
+    weather_id STRING PRIMARY KEY,
+    flight_id STRING,
+    temperature FLOAT,
+    wind_speed FLOAT,
+    visibility STRING,
+    FOREIGN KEY (flight_id) REFERENCES flight_logs(flight_id)
+);
+
+CREATE TABLE battery_health (
+    battery_id STRING PRIMARY KEY,
+    drone_id STRING,
+    charge_cycles INT,
+    battery_capacity INT,
+    last_check DATE,
+    FOREIGN KEY (drone_id) REFERENCES drones(drone_id)
+);
+
+-- Step 3: Insert sample data (10 values per table)
+INSERT INTO drones VALUES
+('D001', 'DJI Mavic 2', 'Active', 85, '2024-01-10'),
+('D002', 'Phantom 4', 'Charging', 60, '2024-02-15'),
+('D003', 'Autel Evo II', 'Active', 90, '2024-03-01'),
+('D004', 'DJI Air 2S', 'Maintenance', 30, '2024-04-10'),
+('D005', 'Skydio 2', 'Offline', 10, '2024-05-05'),
+('D006', 'Matrice 300', 'Active', 75, '2024-06-20'),
+('D007', 'DJI Mini 3 Pro', 'Active', 95, '2024-07-10'),
+('D008', 'Parrot Anafi', 'Charging', 50, '2024-07-20'),
+('D009', 'Yuneec Typhoon', 'Maintenance', 40, '2024-08-01'),
+('D010', 'DJI Inspire 2', 'Offline', 20, '2024-08-10');
+
+INSERT INTO flight_logs VALUES
+('F001', 'D001', 'Kigali', 'Butare', '2024-07-01', 30),
+('F002', 'D002', 'Nairobi', 'Mombasa', '2024-07-02', 40),
+('F003', 'D003', 'Kampala', 'Gulu', '2024-07-03', 25),
+('F004', 'D004', 'Lagos', 'Abuja', '2024-07-04', 35),
+('F005', 'D005', 'Cape Town', 'Johannesburg', '2024-07-05', 50),
+('F006', 'D006', 'Dar es Salaam', 'Dodoma', '2024-07-06', 45),
+('F007', 'D007', 'Accra', 'Kumasi', '2024-07-07', 38),
+('F008', 'D008', 'Bujumbura', 'Gitega', '2024-07-08', 42),
+('F009', 'D009', 'Addis Ababa', 'Hawassa', '2024-07-09', 37),
+('F010', 'D010', 'Luanda', 'Lubango', '2024-07-10', 60);
+
+INSERT INTO crash_reports VALUES
+('C001', 'F002', 'D002', '2024-07-02', 'Engine Failure', 'Mombasa'),
+('C002', 'F005', 'D005', '2024-07-05', 'Battery Drain', 'Johannesburg');
+
+INSERT INTO weather_conditions VALUES
+('W001', 'F001', 28.5, 10.0, 'Clear'),
+('W002', 'F002', 30.0, 15.0, 'Windy'),
+('W003', 'F003', 25.0, 5.0, 'Cloudy'),
+('W004', 'F004', 26.5, 8.0, 'Clear'),
+('W005', 'F005', 29.0, 20.0, 'Stormy');
+
+INSERT INTO battery_health VALUES
+('B001', 'D001', 120, 85, '2024-07-01'),
+('B002', 'D002', 200, 60, '2024-07-02'),
+('B003', 'D003', 150, 90, '2024-07-03'),
+('B004', 'D004', 180, 30, '2024-07-04'),
+('B005', 'D005', 220, 10, '2024-07-05');
