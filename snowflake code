@@ -1,0 +1,262 @@
+Potential Problems at Zipline and How Data Analytics Can Help:
+1.	Drone Flight Reliability and Safety:
+o	Problem: Drones may experience issues such as flight malfunctions, battery failure, navigation errors, or crashes during delivery.
+o	Data Analytics Solution:
+	Monitor and analyze flight data (e.g., speed, altitude, battery levels, GPS location) to predict and prevent potential failures.
+	Create dashboards to visualize flight health metrics.
+	Set up alerts for critical flight parameters, enabling immediate action to prevent accidents.
+	Analyze trends in drone performance to improve flight safety protocols.
+2.	Maintenance Scheduling:
+o	Problem: Drones require regular maintenance, and if maintenance isn't done on time, it can lead to unexpected failures and operational delays.
+o	Data Analytics Solution:
+	Implement predictive analytics to forecast when drones will require maintenance based on historical data (e.g., total flight hours, component wear).
+	Set up automated reminders or dashboards that indicate when drones need maintenance, reducing the chance of failure during deliveries.
+3.	Delivery Time Optimization:
+o	Problem: Delays in deliveries can impact the timely arrival of medical supplies.
+o	Data Analytics Solution:
+	Analyze delivery route data and weather patterns to optimize delivery times.
+	Build a real-time dashboard to track delivery progress and identify bottlenecks in the delivery process.
+	Use data analytics to optimize flight paths and reduce delivery times.
+4.	Real-Time Fleet Monitoring:
+o	Problem: There can be challenges in managing the fleet of drones, ensuring that all drones are in the right location and ready for delivery.
+o	Data Analytics Solution:
+	Set up a real-time fleet management system to track drone location, health status, and readiness.
+	Use data visualization to monitor fleet operations across all delivery zones.
+	Build alerts and notifications when a drone is nearing a failure point or deviates from its assigned task.
+5.	Weather-Related Disruptions:
+o	Problem: Weather conditions can significantly affect drone flight safety and delivery times.
+o	Data Analytics Solution:
+	Analyze weather patterns and historical flight data to predict the likelihood of weather disruptions.
+	Implement weather data integration into flight planning systems to reschedule deliveries or avoid dangerous weather conditions.
+6.	Customer Delivery Feedback:
+o	Problem: Customer satisfaction is critical, and feedback regarding delivery issues (e.g., delays, incorrect deliveries) may not always be captured effectively.
+o	Data Analytics Solution:
+	Gather customer feedback data and delivery quality metrics to assess customer satisfaction.
+	Use sentiment analysis on customer feedback to identify patterns in customer dissatisfaction.
+	Create a dashboard to track customer complaints and provide insights into the root causes of delivery issues.
+________________________________________
+Project Overview:
+The project will focus on a Data Analytics System for monitoring Zipline’s operations, especially targeting drone performance, delivery times, fleet management, and maintenance scheduling. Here's an outline of the system:
+1.	Key Objectives:
+o	Monitor drone flight reliability (health metrics, battery status, GPS data).
+o	Optimize maintenance scheduling based on predictive analytics.
+o	Improve delivery times by analyzing and optimizing routes.
+o	Track real-time fleet status and prevent delivery failures.
+o	Monitor weather disruptions and reschedule deliveries if needed.
+o	Analyze customer feedback for service improvement.
+2.	Key Components:
+o	Data Collection: Collect data from drones, weather sensors, customer feedback forms, and operational logs.
+o	Data Storage: Store data in a cloud database (Snowflake or similar).
+o	Data Processing and Analysis: Use tools like Power BI, Python, or R to analyze and process the data.
+o	Dashboards and Alerts: Build real-time dashboards using Power BI or Grafana to display key performance indicators (KPIs) and set up alerts based on thresholds.
+3.	Technology Stack:
+o	Data Storage: Snowflake (or another cloud database).
+o	Data Analytics Tools: Python (for data processing and modeling), Power BI (for visualization), Grafana (for real-time monitoring).
+o	Data Collection: API Integration with drones, weather sensors, and other IoT devices.
+o	Data Pipeline: Use ETL (Extract, Transform, Load) tools to streamline data collection and processing.
+    
+
+
+
+
+Steps to Build the Project:
+Step 1: Define the Database Schema
+•	Tables: Create tables for storing flight data, maintenance logs, weather data, customer feedback, etc.
+o	drones
+o	flights
+o	maintenance
+o	deliveries
+o	weather
+o	customer_feedback
+•	Define the relationships between the tables.
+Step 2: Data Collection and Integration
+•	Integrate data sources like drone telemetry, weather APIs, and customer feedback into the system.
+•	Use Python to automate data collection from these sources and store them in the Snowflake database.
+Step 3: Data Analysis and Modeling
+•	Perform predictive analysis on drone health and maintenance schedules.
+•	Analyze delivery times and weather conditions to identify patterns and suggest improvements.
+Step 4: Build Dashboards
+•	Use Power BI or Grafana to create real-time dashboards that display:
+o	Drone health metrics.
+o	Delivery performance (on-time vs. delayed deliveries).
+o	Fleet status (active, idle, in maintenance).
+o	Customer feedback trends.
+o	Weather disruptions and affected flights.
+Step 5: Set Up Alerts
+•	Configure alerting mechanisms in Power BI or Grafana to notify the team when a drone is nearing a failure point, when weather disruptions are predicted, or when customer complaints spike.
+Step 6: Testing and Deployment
+•	Test the system using historical data and simulate real-time scenarios.
+•	Deploy the solution on cloud platforms to handle large-scale data.
+________________________________________
+Summary:
+This project will focus on building a data analytics system to optimize Zipline's drone delivery operations, focusing on key issues such as drone reliability, fleet management, delivery optimization, and customer satisfaction. You'll use data collection, analysis, visualization, and alerting systems to make data-driven decisions and ensure smooth and efficient operations.
+You can share this project on GitHub, showing your system engineering and data analytics skills, and tailor it to Zipline's operational challenges.
+
+
+
+
+
+
+CREATE DATABASE zipline_analytics;
+
+USE DATABASE zipline_analytics;
+
+CREATE SCHEMA my_zipline;
+
+
+SHOW DATABASES;  -- To list all databases
+SHOW SCHEMAS IN DATABASE zipline_analytics;  -- To list all schemas in zipline_analytics database
+
+USE DATABASE zipline_analytics;
+USE SCHEMA my_zipline;
+
+CREATE TABLE my_zipline.drones (
+    drone_id INT PRIMARY KEY,            -- Unique identifier for each drone
+    model VARCHAR(50),                   -- Drone model
+    status VARCHAR(20),                  -- Drone status (e.g., Active, Maintenance, Inactive)
+    battery_capacity INT,                -- Battery capacity (percentage)
+    last_maintenance_date DATE,          -- Last maintenance date
+    location VARCHAR(100)               -- Current location of the drone
+);
+
+INSERT INTO my_zipline.drones (drone_id, model, status, battery_capacity, last_maintenance_date, location) 
+VALUES
+    (1, 'Mavic 2 Pro', 'Active', 85, '2025-03-01', 'Kigali'),
+    (2, 'Phantom 4 RTK', 'Active', 90, '2025-03-02', 'Musanze'),
+    (3, 'Mavic 2 Pro', 'Maintenance', 50, '2025-02-15', 'Huye'),
+    (4, 'Phantom 4 RTK', 'Active', 70, '2025-03-10', 'Gisenyi'),
+    (5, 'Mavic 2 Pro', 'Inactive', 20, '2025-01-30', 'Rubavu'),
+    (6, 'Mavic 2 Pro', 'Active', 95, '2025-03-05', 'Nyamata');
+
+Create the Flights Table
+The flights table will store information about each flight taken by the drones. It will be related to the drones table via the drone_id.
+
+
+CREATE TABLE my_zipline.flights (
+    flight_id INT PRIMARY KEY,            -- Unique identifier for each flight
+    drone_id INT,                         -- Foreign key to drones table
+    flight_date DATE,                     -- Date of the flight
+    start_location VARCHAR(100),          -- Starting location of the flight
+    end_location VARCHAR(100),            -- End location of the flight
+    flight_duration INT,                  -- Flight duration in minutes
+    status VARCHAR(20),                   -- Flight status (e.g., Completed, In Progress, Failed)
+    FOREIGN KEY (drone_id) REFERENCES my_zipline.drones(drone_id)
+);
+
+
+
+INSERT INTO my_zipline.flights (flight_id, drone_id, flight_date, start_location, end_location, flight_duration, status)
+VALUES
+    (1, 1, '2025-03-15', 'Kigali', 'Musanze', 45, 'Completed'),
+    (2, 2, '2025-03-16', 'Musanze', 'Gisenyi', 60, 'Completed'),
+    (3, 3, '2025-03-17', 'Huye', 'Rubavu', 50, 'Failed'),
+    (4, 4, '2025-03-18', 'Gisenyi', 'Kigali', 40, 'Completed'),
+    (5, 1, '2025-03-19', 'Kigali', 'Nyamata', 35, 'Completed'),
+    (6, 5, '2025-03-20', 'Rubavu', 'Kigali', 30, 'In Progress');
+
+
+
+
+
+CREATE TABLE my_zipline.maintenance (
+    maintenance_id INT PRIMARY KEY,         -- Unique identifier for each maintenance event
+    drone_id INT,                           -- Foreign key to drones table
+    maintenance_date DATE,                  -- Date of maintenance
+    type_of_maintenance VARCHAR(50),        -- Type of maintenance (e.g., Battery Replacement, General Check)
+    maintenance_cost DECIMAL(10, 2),        -- Cost of maintenance
+    status VARCHAR(20),                     -- Maintenance status (e.g., Completed, Pending)
+    FOREIGN KEY (drone_id) REFERENCES my_zipline.drones(drone_id)
+);
+
+
+
+INSERT INTO my_zipline.maintenance (maintenance_id, drone_id, maintenance_date, type_of_maintenance, maintenance_cost, status)
+VALUES
+    (1, 1, '2025-03-01', 'Battery Replacement', 150.00, 'Completed'),
+    (2, 2, '2025-03-02', 'General Check', 100.00, 'Completed'),
+    (3, 3, '2025-02-15', 'Battery Replacement', 120.00, 'Completed'),
+    (4, 4, '2025-03-10', 'Propeller Repair', 80.00, 'Completed'),
+    (5, 5, '2025-01-30', 'General Check', 75.00, 'Pending'),
+    (6, 6, '2025-03-05', 'Battery Replacement', 140.00, 'Completed');
+
+
+
+CREATE TABLE my_zipline.deliveries (
+    delivery_id INT PRIMARY KEY,            -- Unique identifier for each delivery
+    flight_id INT,                          -- Foreign key to flights table
+    delivery_date DATE,                     -- Date of the delivery
+    delivery_status VARCHAR(20),            -- Status of the delivery (e.g., Delivered, Failed, In Transit)
+    recipient_name VARCHAR(100),            -- Name of the recipient
+    recipient_address VARCHAR(200),         -- Address of the recipient
+    FOREIGN KEY (flight_id) REFERENCES my_zipline.flights(flight_id)
+);
+INSERT INTO my_zipline.deliveries (delivery_id, flight_id, delivery_date, delivery_status, recipient_name, recipient_address)
+VALUES
+    (1, 1, '2025-03-15', 'Delivered', 'John Doe', 'Musanze, Rwanda'),
+    (2, 2, '2025-03-16', 'Delivered', 'Jane Smith', 'Gisenyi, Rwanda'),
+    (3, 3, '2025-03-17', 'Failed', 'Michael Brown', 'Huye, Rwanda'),
+    (4, 4, '2025-03-18', 'Delivered', 'Emma White', 'Kigali, Rwanda'),
+    (5, 5, '2025-03-19', 'In Transit', 'Chris Black', 'Nyamata, Rwanda'),
+    (6, 6, '2025-03-20', 'Delivered', 'Linda Green', 'Rubavu, Rwanda');
+
+
+
+
+CREATE TABLE my_zipline.weather (
+    weather_id INT PRIMARY KEY,             -- Unique identifier for each weather record
+    date DATE,                              -- Date of the weather record
+    location VARCHAR(100),                  -- Location of the weather data (city/region)
+    temperature DECIMAL(5, 2),              -- Temperature in Celsius
+    humidity DECIMAL(5, 2),                 -- Humidity in percentage
+    wind_speed DECIMAL(5, 2),               -- Wind speed in km/h
+    conditions VARCHAR(50)                  -- Weather conditions (e.g., Clear, Rainy, Windy)
+);
+
+
+INSERT INTO my_zipline.weather (weather_id, date, location, temperature, humidity, wind_speed, conditions)
+VALUES
+    (1, '2025-03-15', 'Musanze', 22.5, 65.0, 15.0, 'Clear'),
+    (2, '2025-03-16', 'Gisenyi', 24.0, 60.0, 10.0, 'Clear'),
+    (3, '2025-03-17', 'Huye', 20.0, 70.0, 18.0, 'Rainy'),
+    (4, '2025-03-18', 'Kigali', 25.0, 55.0, 12.0, 'Clear'),
+    (5, '2025-03-19', 'Nyamata', 23.0, 58.0, 8.0, 'Clear'),
+    (6, '2025-03-20', 'Rubavu', 19.0, 72.0, 20.0, 'Windy');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
